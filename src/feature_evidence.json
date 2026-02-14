@@ -1,0 +1,202 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-fix-all-backend-errors-surfacing-in-the-ui-and-ensure-every-existing-screen-s-primary-actions-forms-buttons-are-functional-end-to-end-by-wiring-the-current-react-ui-to-working-motoko-backend-endpoints-remove-placeholder-backend-pending-states-this-includes-the-existing-module-screens-that-currently-show-placeholder-notices-renewal-reminders-savings-coach-membership-checker-wellbeing-fitness-meal-planning-shopping-lists-achievements-community",
+      "featureTitle": "Fix all backend errors surfacing in the UI and ensure every existing screen’s primary actions (forms/buttons) are functional end-to-end by wiring the current React UI to working Motoko backend endpoints (remove placeholder/“backend pending” states). This includes the existing module screens that currently show placeholder notices (Renewal Reminders, Savings Coach, Membership Checker, Wellbeing & Fitness, Meal Planning, Shopping Lists, Achievements, Community).",
+      "files": [
+        "frontend/src/utils/backendErrors.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-the-community-module-s-live-chat-system-end-to-end-global-chat-private-messages-with-automatic-ui-updates-using-1-second-polling-no-manual-refresh-required",
+      "featureTitle": "Implement the Community module’s “Live Chat” system end-to-end (global chat + private messages) with automatic UI updates using 1-second polling (no manual refresh required).",
+      "files": [
+        "frontend/src/components/community/CommunityModule.tsx",
+        "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+        "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+        "frontend/src/hooks/useChat.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-message-flagging-and-staff-moderation-controls-users-can-flag-messages-staff-can-view-flagged-messages-staff-can-delete-messages-directly-from-chats-staff-can-review-the-content-context-of-flagged-private-messages",
+      "featureTitle": "Add message flagging and staff moderation controls: users can flag messages; staff can view flagged messages; staff can delete messages directly from chats; staff can review the content/context of flagged private messages.",
+      "files": [
+        "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+        "frontend/src/components/community/chat/MessageRow.tsx",
+        "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+        "frontend/src/components/layout/AppLayout.tsx",
+        "frontend/src/hooks/useModeration.ts",
+        "frontend/src/pages/staff/StaffModeration.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-private-messaging-controls-to-allow-a-user-to-pause-a-private-conversation-such-that-the-other-participant-cannot-send-new-messages-until-unpaused-conversation-level-control",
+      "featureTitle": "Implement private messaging controls to allow a user to pause a private conversation such that the other participant cannot send new messages until unpaused (conversation-level control).",
+      "files": [
+        "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+        "frontend/src/hooks/useChat.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-enforce-messaging-permission-rules-block-non-staff-users-from-privately-messaging-staff-allow-staff-to-privately-message-each-other-allow-staff-to-send-one-way-messages-to-users-users-cannot-reply-in-that-thread-channel",
+      "featureTitle": "Enforce messaging permission rules: block non-staff users from privately messaging staff; allow staff to privately message each other; allow staff to send one-way messages to users (users cannot reply in that thread/channel).",
+      "files": [
+        "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+        "frontend/src/hooks/useChat.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-hidden-staff-only-group-chat-channel-that-is-visible-only-to-staff-and-supports-the-same-1-second-polling-update-behavior-and-staff-message-deletion-capabilities",
+      "featureTitle": "Create a hidden staff-only group chat channel that is visible only to staff and supports the same 1-second polling update behavior and staff message deletion capabilities.",
+      "files": [
+        "frontend/src/components/community/CommunityModule.tsx",
+        "frontend/src/components/community/chat/StaffGroupChatPanel.tsx",
+        "frontend/src/hooks/useChat.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-a-household-group-chat-for-users-who-are-in-the-same-household-group-scoped-to-their-household-membership-with-1-second-polling-updates-and-message-flagging-available-to-users",
+      "featureTitle": "Create a household group chat for users who are in the same household group, scoped to their household membership, with 1-second polling updates and message flagging available to users.",
+      "files": [
+        "frontend/src/components/community/CommunityModule.tsx",
+        "frontend/src/components/community/chat/HouseholdChatPanel.tsx",
+        "frontend/src/hooks/useChat.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-the-requested-work-as-small-independently-shippable-phases-while-extending-the-current-project-do-not-replace-it-ensuring-the-app-remains-functional-at-the-end-of-each-phase-no-broken-navigation-or-dead-buttons",
+      "featureTitle": "Implement the requested work as small, independently shippable phases while extending the current project (do not replace it), ensuring the app remains functional at the end of each phase (no broken navigation or dead buttons).",
+      "files": [
+        "frontend/src/components/community/CommunityModule.tsx",
+        "frontend/src/components/layout/AppLayout.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-consistent-coherent-visual-theme-across-the-updated-community-chat-experiences-and-any-newly-added-staff-moderation-views-typography-spacing-component-density-and-a-distinct-color-palette-while-staying-consistent-with-the-existing-tailwind-shadcn-design-system-and-supporting-light-dark-mode-avoid-a-blue-purple-primary-palette",
+      "featureTitle": "Apply a consistent, coherent visual theme across the updated Community/chat experiences and any newly-added staff moderation views (typography, spacing, component density, and a distinct color palette) while staying consistent with the existing Tailwind/Shadcn design system and supporting light/dark mode. Avoid a blue+purple primary palette.",
+      "files": [
+        "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+        "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+        "frontend/src/pages/staff/StaffModeration.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

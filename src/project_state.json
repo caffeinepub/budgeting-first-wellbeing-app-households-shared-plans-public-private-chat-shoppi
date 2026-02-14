@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Extend the existing site in small automatic phases to fix backend/UI integration issues and deliver a functional live chat/messaging system (1-second polling) with staff moderation tools, messaging rules, and staff/household group chats.",
+  "architectural_notes": [
+    "Deliver updates by extending the current project in small automatic phases (not replacing the project).",
+    "Live chat updates will use 1-second frontend polling (no realtime sockets)."
+  ],
+  "known_issues": [
+    "Backend errors are currently visible on the frontend and indicate incomplete UI-to-backend wiring; site functionality/buttons are not fully working yet."
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-fix-all-backend-errors-surfacing-in-the-ui-and-ensure-every-existing-screen-s-primary-actions-forms-buttons-are-functional-end-to-end-by-wiring-the-current-react-ui-to-working-motoko-backend-endpoints-remove-placeholder-backend-pending-states-this-includes-the-existing-module-screens-that-currently-show-placeholder-notices-renewal-reminders-savings-coach-membership-checker-wellbeing-fitness-meal-planning-shopping-lists-achievements-community",
+      "title": "Fix all backend errors surfacing in the UI and ensure every existing screen’s primary actions (forms/buttons) are functional end-to-end by wiring the current React UI to working Motoko backend endpoints (remove placeholder/“backend pending” states). This includes the existing module screens that currently show placeholder notices (Renewal Reminders, Savings Coach, Membership Checker, Wellbeing & Fitness, Meal Planning, Shopping Lists, Achievements, Community).",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-community-module-s-live-chat-system-end-to-end-global-chat-private-messages-with-automatic-ui-updates-using-1-second-polling-no-manual-refresh-required",
+      "title": "Implement the Community module’s “Live Chat” system end-to-end (global chat + private messages) with automatic UI updates using 1-second polling (no manual refresh required).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-message-flagging-and-staff-moderation-controls-users-can-flag-messages-staff-can-view-flagged-messages-staff-can-delete-messages-directly-from-chats-staff-can-review-the-content-context-of-flagged-private-messages",
+      "title": "Add message flagging and staff moderation controls: users can flag messages; staff can view flagged messages; staff can delete messages directly from chats; staff can review the content/context of flagged private messages.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-private-messaging-controls-to-allow-a-user-to-pause-a-private-conversation-such-that-the-other-participant-cannot-send-new-messages-until-unpaused-conversation-level-control",
+      "title": "Implement private messaging controls to allow a user to pause a private conversation such that the other participant cannot send new messages until unpaused (conversation-level control).",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enforce-messaging-permission-rules-block-non-staff-users-from-privately-messaging-staff-allow-staff-to-privately-message-each-other-allow-staff-to-send-one-way-messages-to-users-users-cannot-reply-in-that-thread-channel",
+      "title": "Enforce messaging permission rules: block non-staff users from privately messaging staff; allow staff to privately message each other; allow staff to send one-way messages to users (users cannot reply in that thread/channel).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-hidden-staff-only-group-chat-channel-that-is-visible-only-to-staff-and-supports-the-same-1-second-polling-update-behavior-and-staff-message-deletion-capabilities",
+      "title": "Create a hidden staff-only group chat channel that is visible only to staff and supports the same 1-second polling update behavior and staff message deletion capabilities.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-household-group-chat-for-users-who-are-in-the-same-household-group-scoped-to-their-household-membership-with-1-second-polling-updates-and-message-flagging-available-to-users",
+      "title": "Create a household group chat for users who are in the same household group, scoped to their household membership, with 1-second polling updates and message flagging available to users.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-requested-work-as-small-independently-shippable-phases-while-extending-the-current-project-do-not-replace-it-ensuring-the-app-remains-functional-at-the-end-of-each-phase-no-broken-navigation-or-dead-buttons",
+      "title": "Implement the requested work as small, independently shippable phases while extending the current project (do not replace it), ensuring the app remains functional at the end of each phase (no broken navigation or dead buttons).",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-consistent-coherent-visual-theme-across-the-updated-community-chat-experiences-and-any-newly-added-staff-moderation-views-typography-spacing-component-density-and-a-distinct-color-palette-while-staying-consistent-with-the-existing-tailwind-shadcn-design-system-and-supporting-light-dark-mode-avoid-a-blue-purple-primary-palette",
+      "title": "Apply a consistent, coherent visual theme across the updated Community/chat experiences and any newly-added staff moderation views (typography, spacing, component density, and a distinct color palette) while staying consistent with the existing Tailwind/Shadcn design system and supporting light/dark mode. Avoid a blue+purple primary palette.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Fix all backend errors and ensure frontend UI is fully connected to backend (functional buttons/workflows, no backend errors surfacing in UI).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Implement 'Live Chat' with near-real-time updates via 1-second frontend polling (no manual refresh).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Add chat moderation: users can flag messages; staff can view flagged messages and delete messages directly from chats.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Private messaging controls: allow users to pause conversations (prevent the other user from messaging them).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Staff review workflow for flagged private messages (staff can review PMs when flagged).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Messaging permission rules: block users from privately messaging staff; allow staff to privately message each other; allow staff to send one-way messages to users.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Create a hidden staff-only group chat visible only to staff.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Create a household group chat for users within the same household group.",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Fix backend/UI integration and implement Live Chat with staff moderation, rules, and group chats (1-second polling)",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,115 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-14T09:49:20.185Z",
+  "summary": "Diff primarily adds new frontend Community chat panels (global/private/household/staff), React Query polling hooks, moderation hooks, a Staff Moderation page, and a backend error translation utility. However, the implementation is explicitly marked as \"Backend method not yet implemented\" and several UI states still show \"backend ... not yet deployed\" messages, indicating the requested end-to-end backend/UI wiring and chat functionality are not completed. Some styling choices in moderation use blue/purple accents that conflict with the palette constraint.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Fix all backend errors surfacing in the UI and ensure every existing screen’s primary actions are functional end-to-end by wiring the current React UI to working Motoko backend endpoints and removing placeholder/“backend pending” states across modules.",
+      "reason": "No backend (Motoko) changes are present in the diff, and UI still contains explicit placeholder/error messaging indicating backend functionality is not deployed/pending. The household module is explicitly described as still showing a \"backend functionality pending\" alert.",
+      "evidence": [
+        "frontend/src/hooks/useChat.ts",
+        "frontend/src/hooks/useModeration.ts",
+        "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+        "frontend/src/components/community/chat/HouseholdChatPanel.tsx",
+        "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+        "frontend/src/components/community/chat/StaffGroupChatPanel.tsx",
+        "frontend/src/pages/staff/StaffModeration.tsx",
+        "frontend-file-summaries.txt (\"HouseholdDashboard ... backend functionality pending alert\")"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Implement the Community module’s Live Chat end-to-end (global + private messages) with automatic UI updates via 1-second polling, removing 'coming soon' empty states when authenticated.",
+      "reason": "While 1-second polling is added in React Query hooks, the hooks and panels explicitly note backend methods are not implemented and display UI errors stating the backend chat functionality is not yet deployed, so it is not end-to-end functional.",
+      "evidence": [
+        "frontend/src/hooks/useChat.ts (\"Backend method not yet implemented\", refetchInterval: 1000)",
+        "frontend/src/components/community/chat/GlobalChatPanel.tsx (error text: \"backend chat functionality is not yet deployed\")",
+        "frontend/src/components/community/chat/PrivateMessagesPanel.tsx (error text: \"backend chat functionality is not yet deployed\")",
+        "frontend/src/components/community/CommunityModule.tsx"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Add message flagging and staff moderation controls end-to-end: users can flag; staff can view flagged messages with context; staff can delete messages; access control enforced.",
+      "reason": "Frontend UI/hooks for flagging, deleting, and listing flagged messages are added, but they are explicitly marked as calling backend methods that are 'not yet implemented'. No backend access control enforcement is shown in the diff; staff-only gating appears to be frontend-only in places (e.g., StaffGroupChatPanel returns null if not admin).",
+      "evidence": [
+        "frontend/src/hooks/useModeration.ts (\"Backend method not yet implemented\" for flagMessage/getFlaggedMessages/deleteMessage/resolveFlaggedMessage)",
+        "frontend/src/components/community/chat/MessageRow.tsx (flag/delete UI)",
+        "frontend/src/pages/staff/StaffModeration.tsx (staff-only moderation UI)",
+        "frontend/src/components/community/chat/StaffGroupChatPanel.tsx (\"if (!isAdmin) return null\")"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "requirement": "Implement private conversation pause/unpause with backend enforcement so the other participant cannot send until unpaused, with clear UI messaging.",
+      "reason": "PrivateMessagesPanel adds pause/unpause UI and status hooks, but the underlying chat hooks are marked as calling backend methods not yet implemented. Backend enforcement cannot be confirmed/implemented from this diff.",
+      "evidence": [
+        "frontend/src/components/community/chat/PrivateMessagesPanel.tsx (pause/unpause UI + canSendMessage logic)",
+        "frontend/src/hooks/useChat.ts (conversation status / pause/unpause calls marked \"Backend method not yet implemented\")"
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "requirement": "Enforce messaging permission rules: block non-staff users from privately messaging staff; allow staff-to-staff normal; allow staff one-way messages to users (users cannot reply), enforced by backend authorization checks.",
+      "reason": "No backend implementation is shown, and the frontend private messaging UI in the diff does not show rule-specific gating/messaging for staff/user one-way threads or blocking user->staff initiation beyond generic paused logic. The hooks are placeholders awaiting backend methods.",
+      "evidence": [
+        "frontend/src/components/community/chat/PrivateMessagesPanel.tsx (no visible staff/user one-way or user->staff blocking logic in shown excerpt)",
+        "frontend/src/hooks/useChat.ts (sendPrivateMessage/getPrivateConversations/getPrivateMessages marked \"Backend method not yet implemented\")"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "Create a hidden staff-only group chat channel visible only to staff with 1-second polling and staff message deletion, with backend access control preventing non-staff access/fetch.",
+      "reason": "A StaffGroupChatPanel exists and is hidden in the UI for non-admins, but backend methods are not implemented and there is no evidence of backend access control preventing non-staff from fetching messages directly.",
+      "evidence": [
+        "frontend/src/components/community/chat/StaffGroupChatPanel.tsx (\"if (!isAdmin) return null\")",
+        "frontend/src/hooks/useChat.ts (staff group methods not shown fully but implied; overall file notes backend methods not implemented)",
+        "frontend/src/components/community/CommunityModule.tsx (staff tab only if isAdmin)"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Create a household group chat scoped to household membership with 1-second polling and message flagging, and show a clear empty state if not in a household.",
+      "reason": "HouseholdChatPanel includes an empty-state message for not being in a household and uses polling hooks, but backend methods are explicitly not implemented, and scoping/authorization enforcement cannot be confirmed from this diff.",
+      "evidence": [
+        "frontend/src/components/community/chat/HouseholdChatPanel.tsx (empty state text for needing a household)",
+        "frontend/src/hooks/useChat.ts (household message methods marked \"Backend method not yet implemented\")"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "requirement": "Apply a coherent visual theme across chat and moderation views, consistent with Tailwind/Shadcn, supporting light/dark mode, and avoid a blue+purple primary palette.",
+      "reason": "StaffModeration assigns location badge colors including explicit blue and purple classes (bg-blue-500, bg-purple-500), which conflicts with the constraint to avoid a blue+purple primary palette (at least within this newly-added moderation UI).",
+      "evidence": [
+        "frontend/src/pages/staff/StaffModeration.tsx (getLocationBadge colors: 'bg-blue-500', 'bg-purple-500')"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Chat hook support for optional image attachments in send message mutations (e.g., image parameter).",
+      "reason": "The BuildRequest does not ask for image attachments in chat messages; the diff adds an image argument in mutation signatures and passes it to backend methods.",
+      "evidence": [
+        "frontend/src/hooks/useChat.ts (useSendGlobalMessage/useSendPrivateMessage mutationFn includes `{ content, image }` and passes image to actor methods)"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/components/community/CommunityModule.tsx",
+    "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+    "frontend/src/components/community/chat/HouseholdChatPanel.tsx",
+    "frontend/src/components/community/chat/MessageRow.tsx",
+    "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+    "frontend/src/components/community/chat/StaffGroupChatPanel.tsx",
+    "frontend/src/components/layout/AppLayout.tsx",
+    "frontend/src/hooks/useChat.ts",
+    "frontend/src/hooks/useModeration.ts",
+    "frontend/src/pages/staff/StaffModeration.tsx",
+    "frontend/src/utils/backendErrors.ts",
+    "project_state.json"
+  ]
+}

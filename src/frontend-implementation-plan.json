@@ -1,0 +1,347 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Wire existing modules to backend and implement Community Live Chat + moderation with 1-second polling",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Remove placeholder states and wire each existing module screen’s primary actions to backend-backed React Query hooks with user-friendly error handling.",
+      "acceptanceCriteria": [
+        "No module screen displays a placeholder message indicating missing backend support (e.g., ‘Backend functionality pending’) once the relevant endpoints are implemented.",
+        "All primary user actions on existing screens (create/update/list/delete where applicable) complete successfully and persist via the backend.",
+        "Unexpected backend traps are not shown to end users; user-facing errors are presented as clear, actionable English messages.",
+        "Frontend React Query hooks exist for each implemented endpoint and invalidate/refetch appropriately after mutations."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/backend.d.ts",
+          "operation": "modify",
+          "description": "Extend the typed frontend backend interface to include the capabilities needed by Renewal Reminders, Savings Coach, Membership Checker, Wellbeing & Fitness, Meal Planning, Shopping Lists, Achievements, and Community (chat). Keep it as type declarations only so the React UI can call the newly-implemented backend functions safely."
+        },
+        {
+          "path": "frontend/src/utils/backendErrors.ts",
+          "operation": "create",
+          "description": "Add a small shared helper to translate backend failures into clear English messages suitable for UI (e.g., authorization denied, not found, validation, temporary issue), preventing raw trap text from being shown."
+        },
+        {
+          "path": "frontend/src/hooks/useReminders.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for Renewal Reminders list/create/update/delete and ensure queries invalidate/refetch after mutations."
+        },
+        {
+          "path": "frontend/src/components/reminders/RenewalRemindersModule.tsx",
+          "operation": "modify",
+          "description": "Replace the current placeholder/“pending” UI with end-to-end reminder listing + add/edit/delete flows using the new reminders hooks; show clear English empty states and toast errors via the shared backend error helper."
+        },
+        {
+          "path": "frontend/src/hooks/useSavingsCoach.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for Savings Coach analysis requests/results (as supported by the backend) and mutation-driven invalidation."
+        },
+        {
+          "path": "frontend/src/components/savings-coach/SavingsCoachModule.tsx",
+          "operation": "modify",
+          "description": "Wire the primary action (Run Savings Analysis) to backend-backed hooks, replace placeholder messaging with real loading/success/error states, and present actionable English errors (no raw traps)."
+        },
+        {
+          "path": "frontend/src/hooks/useMemberships.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for membership list/create/update/delete and any checker/evaluation operation supported by the backend; include invalidation/refetch after changes."
+        },
+        {
+          "path": "frontend/src/components/memberships/MembershipCheckerModule.tsx",
+          "operation": "modify",
+          "description": "Replace placeholder membership UI with backend-backed list + add/edit/delete using hooks and clear English empty states; ensure the primary action button performs a real operation end-to-end."
+        },
+        {
+          "path": "frontend/src/hooks/useWellbeing.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for wellbeing goals, BMI history, and activities (create/list/delete or update as implemented) with correct invalidation."
+        },
+        {
+          "path": "frontend/src/components/wellbeing/WellbeingFitnessModule.tsx",
+          "operation": "modify",
+          "description": "Replace placeholder BMI/goals/activities views with backend-backed lists and add actions using the wellbeing hooks, keeping the existing disclaimers and using clear English error messaging."
+        },
+        {
+          "path": "frontend/src/hooks/useMealPlanning.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for meal plan CRUD aligned to backend capabilities, including invalidation/refetch after mutations."
+        },
+        {
+          "path": "frontend/src/components/meal-planning/MealPlanningModule.tsx",
+          "operation": "modify",
+          "description": "Wire Create Meal Plan and listing UI to backend-backed hooks, remove backend-pending placeholders, and show clear English empty/loading/error states."
+        },
+        {
+          "path": "frontend/src/hooks/useShoppingLists.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for shopping list CRUD as implemented in the backend, with proper invalidation/refetch after changes."
+        },
+        {
+          "path": "frontend/src/components/shopping/ShoppingListsModule.tsx",
+          "operation": "modify",
+          "description": "Wire Create List and listing UI to backend-backed hooks, remove backend-pending placeholders, and show clear English empty/loading/error states."
+        },
+        {
+          "path": "frontend/src/hooks/useAchievements.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for listing achievements/unlocks and any progress updates supported by the backend; ensure correct invalidation after mutations."
+        },
+        {
+          "path": "frontend/src/components/achievements/AchievementsScreen.tsx",
+          "operation": "modify",
+          "description": "Replace static placeholder achievements with backend-backed achievements state using the achievements hooks; remove backend-pending alert and show clear English empty/loading/error states."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Unblock household-related hooks once the backend interface is extended (e.g., household membership/budget/member list if present) while keeping current invite flows stable; ensure all hooks follow the existing actor-enabled pattern."
+        },
+        {
+          "path": "frontend/src/components/household/HouseholdDashboard.tsx",
+          "operation": "modify",
+          "description": "Remove the backend-pending alert once household capabilities are available; wire household overview sections to real hooks (while keeping invite panel and pending invites intact)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Implement Community Live Chat UI for global chat and private messages with automatic 1-second polling via React Query.",
+      "acceptanceCriteria": [
+        "Global chat supports sending and listing messages and updates on a 1-second polling interval while the view is open.",
+        "Private messages support starting/viewing a conversation thread and updates on a 1-second polling interval while the view is open.",
+        "Polling is implemented via frontend polling (e.g., React Query refetchInterval) and does not rely on WebSockets or realtime sockets.",
+        "The existing CommunityModule UI is replaced/updated so it no longer shows ‘coming soon’ empty states for chat when the user is authenticated."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useChat.ts",
+          "operation": "create",
+          "description": "Create React Query hooks for Community chat (global messages list/send, private conversations list/thread fetch/send). Implement 1-second polling using React Query refetchInterval only while relevant views are active."
+        },
+        {
+          "path": "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+          "operation": "create",
+          "description": "Add a Global Chat panel UI (message list + composer) powered by useChat hooks, with loading/empty/error states and 1-second polling while open. Use shadcn-ui primitives (Card, Button, Input, etc.) for consistent styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+          "operation": "create",
+          "description": "Add a Private Messages panel UI (conversation list + selected thread + composer) powered by useChat hooks, with 1-second polling for the active thread while open. Use shadcn-ui primitives for consistent styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/community/CommunityModule.tsx",
+          "operation": "modify",
+          "description": "Replace the current ‘backend pending/coming soon’ placeholders with the new GlobalChatPanel and PrivateMessagesPanel. Remove the placeholder alert for authenticated users and ensure the module updates automatically via 1-second polling."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Add message flagging and staff moderation UI (flag list with context, staff delete controls) with staff-only access gating.",
+      "acceptanceCriteria": [
+        "Users can flag a specific message (global, household, staff group, or private message as applicable) with a stored flag record accessible to staff.",
+        "Staff have a staff-only UI to list flagged items with enough context to act (message content, sender, location/channel, timestamp).",
+        "Staff can delete a message from the relevant chat view; deleted messages no longer appear for regular users.",
+        "Access control prevents non-staff users from accessing staff-only flagged-message views or moderation actions."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useModeration.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for flagging a message, fetching flagged items for staff, and staff deletion actions. Use the shared backend error mapping to present clear English errors."
+        },
+        {
+          "path": "frontend/src/components/community/chat/MessageRow.tsx",
+          "operation": "create",
+          "description": "Create a reusable chat message row UI that supports (a) user flag action and (b) staff delete action (visible only when admin). Use shadcn-ui components (Button, Dropdown/Menu if present) to keep UI consistent. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/staff/StaffModeration.tsx",
+          "operation": "create",
+          "description": "Implement a staff-only moderation view listing flagged items with enough context to act (content, sender, where it occurred, timestamp) and actions to delete/resolve. Gate access using the authorization component’s role-based approach via existing admin checks (e.g., useIsCallerAdmin). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Wire StaffModeration into the existing navigation (staff-only) without breaking existing navigation. Continue using the existing admin gating pattern so non-staff cannot access the view from UI."
+        },
+        {
+          "path": "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+          "operation": "modify",
+          "description": "Integrate MessageRow so users can flag global messages and staff can delete messages directly from the chat UI. Ensure deletion triggers query invalidation/refetch."
+        },
+        {
+          "path": "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+          "operation": "modify",
+          "description": "Integrate MessageRow and moderation context display so staff can review flagged private messages with sufficient thread context and can delete messages when authorized."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Add private conversation pause/unpause controls and reflect paused state in the UI (input disabled + clear explanation).",
+      "acceptanceCriteria": [
+        "A user can pause a private conversation from the private message UI.",
+        "When a conversation is paused by one participant, the other participant cannot send messages and receives a clear English UI message indicating messaging is unavailable.",
+        "Unpausing restores the ability to send messages.",
+        "Backend enforces the pause rule so it cannot be bypassed by direct calls."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useChat.ts",
+          "operation": "modify",
+          "description": "Extend chat hooks to support conversation-level pause/unpause and to fetch/derive the thread’s current pause state. Ensure mutations invalidate the active thread query so UI updates within the 1-second polling model."
+        },
+        {
+          "path": "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+          "operation": "modify",
+          "description": "Add pause/unpause controls in the private thread header, disable the message composer when the current user cannot send due to pause rules, and show a clear English explanation inline."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Enforce messaging permission rules in the UI: block user-to-staff private messages, allow staff-to-staff, and implement staff-to-user one-way threads (user read-only).",
+      "acceptanceCriteria": [
+        "If a non-staff user attempts to start or send a private message to a staff user, the UI blocks it and the backend rejects it.",
+        "Staff-to-staff private conversations function normally for staff accounts.",
+        "Staff can send one-way messages to a user in a staff-to-user channel/thread; the user can read but cannot send replies (UI disables input and backend rejects sends).",
+        "Rules are enforced by backend authorization checks (not just frontend gating)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useChat.ts",
+          "operation": "modify",
+          "description": "Update hooks to expose permission metadata needed by the UI (e.g., canStartThread/canSend in a given thread) and to surface backend authorization failures through the shared English error mapping."
+        },
+        {
+          "path": "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+          "operation": "modify",
+          "description": "Add UI gating for starting threads and sending messages based on staff/user rules (including one-way staff-to-user threads). Disable inputs and show clear English reasons when messaging is not allowed."
+        },
+        {
+          "path": "frontend/src/hooks/useProfile.ts",
+          "operation": "modify",
+          "description": "Use the existing authorization component’s role-based approach by relying on getCallerUserRole / isCallerAdmin data where needed to gate private-messaging affordances consistently. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Add a hidden staff-only group chat channel (1-second polling) visible only to staff, including staff deletion controls.",
+      "acceptanceCriteria": [
+        "Non-staff users cannot see or access the staff group chat UI routes/views and cannot fetch its messages from the backend.",
+        "Staff can send and view messages in the staff group chat with 1-second polling updates.",
+        "Staff can delete messages in the staff group chat."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useChat.ts",
+          "operation": "modify",
+          "description": "Add hook support for staff group chat message list/send/delete with 1-second polling while open, aligned to backend capabilities."
+        },
+        {
+          "path": "frontend/src/components/community/chat/StaffGroupChatPanel.tsx",
+          "operation": "create",
+          "description": "Create a staff-only group chat panel using shadcn-ui primitives and MessageRow to enable staff deletion controls. Gate rendering using the authorization component’s admin check pattern. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/community/CommunityModule.tsx",
+          "operation": "modify",
+          "description": "Wire the StaffGroupChatPanel into the Community module (e.g., an additional staff-only tab/section) so it is not visible to non-staff users, while keeping global and private chat accessible to normal users."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Add household group chat scoped to household membership with 1-second polling, clear empty state for users without a household, and message flagging.",
+      "acceptanceCriteria": [
+        "Only users who are members of the same household can access that household’s group chat messages.",
+        "Users not in any household do not see household chat (or see a clear English empty state explaining they must join a household).",
+        "Household chat updates with 1-second polling while open.",
+        "Users can flag household chat messages to staff."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useChat.ts",
+          "operation": "modify",
+          "description": "Add hook support for household chat (membership-aware access, message list/send, 1-second polling while open) aligned to backend capabilities; integrate with moderation hook for flagging household messages."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add any required household membership query hook(s) needed to decide whether to show household chat vs. an explanatory empty state, matching the updated backend interface typing."
+        },
+        {
+          "path": "frontend/src/components/community/chat/HouseholdChatPanel.tsx",
+          "operation": "create",
+          "description": "Create a household chat panel that (a) shows chat when the user is in a household and (b) otherwise shows a clear English empty state about joining/being invited. Use shadcn-ui primitives and MessageRow to support message flagging. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/community/CommunityModule.tsx",
+          "operation": "modify",
+          "description": "Wire HouseholdChatPanel into the Community module as an additional tab/section that is only meaningful for household members, while keeping global and private chat unchanged."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Deliver the frontend work in small, independently shippable phases while extending the existing project and keeping navigation/actions functional throughout.",
+      "acceptanceCriteria": [
+        "Work is organized so that each phase results in a deployable state where relevant UI paths work end-to-end for the completed scope.",
+        "No phase introduces a UI view that appears complete but fails due to missing backend wiring (avoid placeholders for completed areas).",
+        "Existing working features (Internet Identity login, profiles, budgets, household invites, staff directory) remain functional throughout."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/implementation/phases.md",
+          "operation": "create",
+          "description": "Document the intended frontend delivery phases (e.g., community global chat first, then private messaging, then moderation, then household/staff chats, then remaining modules) to keep changes independently shippable without replacing the project."
+        },
+        {
+          "path": "frontend/src/components/community/CommunityModule.tsx",
+          "operation": "modify",
+          "description": "Structure the Community module so features become available only when their backend-backed hooks are present and returning data, avoiding ‘looks finished but broken’ states; keep the module functional at the end of each phase."
+        },
+        {
+          "path": "frontend/src/components/layout/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Ensure any newly wired views (e.g., staff moderation) are added without breaking existing navigation, and keep existing working modules (login/onboarding/budget/invites/staff directory) operational."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Apply a consistent visual theme across Community/chat and staff moderation views using the existing Tailwind/shadcn system, supporting light/dark mode and avoiding a blue+purple primary palette.",
+      "acceptanceCriteria": [
+        "Community/chat UI and staff moderation UI share a consistent layout and styling (cards, lists, message bubbles/rows, empty states).",
+        "Light and dark modes remain readable with proper contrast.",
+        "Primary accents are not blue+purple; the chosen palette is applied consistently to interactive elements (buttons, links, active tabs, badges)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Adjust/extend theme tokens only if needed to ensure Community/chat + moderation views have coherent spacing/typography and strong contrast in light/dark mode while maintaining the non-blue+purple primary palette."
+        },
+        {
+          "path": "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+          "operation": "modify",
+          "description": "Ensure consistent chat styling (message rows/bubbles, timestamps, empty states, composer density) using Tailwind + shadcn-ui primitives. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+          "operation": "modify",
+          "description": "Apply the same consistent chat styling patterns used in global chat to private messaging (thread list, thread header, composer, empty states). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/staff/StaffModeration.tsx",
+          "operation": "modify",
+          "description": "Style the staff moderation UI to match the chat module (cards, lists, badges, spacing), keeping readable light/dark contrast and using the established non-blue+purple accent/primary colors. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

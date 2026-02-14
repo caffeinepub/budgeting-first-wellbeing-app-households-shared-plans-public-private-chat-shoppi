@@ -1,0 +1,196 @@
+{
+  "kind": "build_request",
+  "title": "Fix backend/UI integration and implement Live Chat with staff moderation, rules, and group chats (1-second polling)",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Fix all backend errors surfacing in the UI and ensure every existing screen’s primary actions (forms/buttons) are functional end-to-end by wiring the current React UI to working Motoko backend endpoints (remove placeholder/“backend pending” states). This includes the existing module screens that currently show placeholder notices (Renewal Reminders, Savings Coach, Membership Checker, Wellbeing & Fitness, Meal Planning, Shopping Lists, Achievements, Community).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1",
+          "msg-2"
+        ],
+        "quotes": [
+          "This phase needs to fix all backend errors, connect all UIs and frontend to backend... the site has to be functional including the buttons etc etc",
+          "Implement missing backend endpoints and wire the frontend so every existing module screen has working persistence and no longer shows any “backend not connected / placeholder” states (Renewal Reminders, Savings Coach, Membership Checker, Wellbeing & Fitness, Meal Planning, Shopping Lists, Achievements, Community)."
+        ]
+      },
+      "acceptanceCriteria": [
+        "No module screen displays a placeholder message indicating missing backend support (e.g., ‘Backend functionality pending’) once the relevant endpoints are implemented.",
+        "All primary user actions on existing screens (create/update/list/delete where applicable) complete successfully and persist via the backend.",
+        "Unexpected backend traps are not shown to end users; user-facing errors are presented as clear, actionable English messages.",
+        "Frontend React Query hooks exist for each implemented endpoint and invalidate/refetch appropriately after mutations."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement the Community module’s “Live Chat” system end-to-end (global chat + private messages) with automatic UI updates using 1-second polling (no manual refresh required).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "The chat system what I call live chat so remember that, this has to be a 1 second UI and backend automatic refresh so users don't need to manually do this"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Global chat supports sending and listing messages and updates on a 1-second polling interval while the view is open.",
+        "Private messages support starting/viewing a conversation thread and updates on a 1-second polling interval while the view is open.",
+        "Polling is implemented via frontend polling (e.g., React Query refetchInterval) and does not rely on WebSockets or realtime sockets.",
+        "The existing CommunityModule UI is replaced/updated so it no longer shows ‘coming soon’ empty states for chat when the user is authenticated."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Add message flagging and staff moderation controls: users can flag messages; staff can view flagged messages; staff can delete messages directly from chats; staff can review the content/context of flagged private messages.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Allow staff to delete messages directly from the chats, allow staff to see flagged messages, allow users to flag messages to staff",
+          "Allow staff to review private messages when flagged"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Users can flag a specific message (global, household, staff group, or private message as applicable) with a stored flag record accessible to staff.",
+        "Staff have a staff-only UI to list flagged items with enough context to act (message content, sender, location/channel, timestamp).",
+        "Staff can delete a message from the relevant chat view; deleted messages no longer appear for regular users.",
+        "Access control prevents non-staff users from accessing staff-only flagged-message views or moderation actions."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement private messaging controls to allow a user to pause a private conversation such that the other participant cannot send new messages until unpaused (conversation-level control).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Allow users to pause conversations in private messages to prevent the other user from messenging them"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A user can pause a private conversation from the private message UI.",
+        "When a conversation is paused by one participant, the other participant cannot send messages and receives a clear English UI message indicating messaging is unavailable.",
+        "Unpausing restores the ability to send messages.",
+        "Backend enforces the pause rule so it cannot be bypassed by direct calls."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Enforce messaging permission rules: block non-staff users from privately messaging staff; allow staff to privately message each other; allow staff to send one-way messages to users (users cannot reply in that thread/channel).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Block users from private messaging staff, allow staff to private message each other.",
+          "Allow staff to send 1 way messages to users"
+        ]
+      },
+      "acceptanceCriteria": [
+        "If a non-staff user attempts to start or send a private message to a staff user, the UI blocks it and the backend rejects it.",
+        "Staff-to-staff private conversations function normally for staff accounts.",
+        "Staff can send one-way messages to a user in a staff-to-user channel/thread; the user can read but cannot send replies (UI disables input and backend rejects sends).",
+        "Rules are enforced by backend authorization checks (not just frontend gating)."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Create a hidden staff-only group chat channel that is visible only to staff and supports the same 1-second polling update behavior and staff message deletion capabilities.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Create a hidden group chat for staff that is only visible to staff"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Non-staff users cannot see or access the staff group chat UI routes/views and cannot fetch its messages from the backend.",
+        "Staff can send and view messages in the staff group chat with 1-second polling updates.",
+        "Staff can delete messages in the staff group chat."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Create a household group chat for users who are in the same household group, scoped to their household membership, with 1-second polling updates and message flagging available to users.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Create a household group chat for users who are in a household group"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Only users who are members of the same household can access that household’s group chat messages.",
+        "Users not in any household do not see household chat (or see a clear English empty state explaining they must join a household).",
+        "Household chat updates with 1-second polling while open.",
+        "Users can flag household chat messages to staff."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Implement the requested work as small, independently shippable phases while extending the current project (do not replace it), ensuring the app remains functional at the end of each phase (no broken navigation or dead buttons).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "No we're not replacing we're extending the current project in small phases"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Work is organized so that each phase results in a deployable state where relevant UI paths work end-to-end for the completed scope.",
+        "No phase introduces a UI view that appears complete but fails due to missing backend wiring (avoid placeholders for completed areas).",
+        "Existing working features (Internet Identity login, profiles, budgets, household invites, staff directory) remain functional throughout."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Apply a consistent, coherent visual theme across the updated Community/chat experiences and any newly-added staff moderation views (typography, spacing, component density, and a distinct color palette) while staying consistent with the existing Tailwind/Shadcn design system and supporting light/dark mode. Avoid a blue+purple primary palette.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Yes proceed and build"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Community/chat UI and staff moderation UI share a consistent layout and styling (cards, lists, message bubbles/rows, empty states).",
+        "Light and dark modes remain readable with proper contrast.",
+        "Primary accents are not blue+purple; the chosen palette is applied consistently to interactive elements (buttons, links, active tabs, badges)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Extend the existing project; do not replace it.",
+    "Implement near-real-time updates via 1-second frontend polling; do not use WebSockets/socket.io or other realtime transports.",
+    "Backend must remain a single Motoko actor in backend/main.mo; only introduce backend/migration.mo if a stable-state upgrade is required.",
+    "Do not edit files under frontend/src/components/ui, frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/hooks/useActor.ts, frontend/src/main.tsx (compose/extend instead).",
+    "Use English for all user-facing text."
+  ],
+  "nonGoals": [
+    "Adding third-party authentication providers (only Internet Identity).",
+    "Implementing external databases or non-Motoko backend services.",
+    "Push notifications, email/SMS integrations, or realtime WebSocket chat.",
+    "Rebuilding the app from scratch or removing existing modules."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

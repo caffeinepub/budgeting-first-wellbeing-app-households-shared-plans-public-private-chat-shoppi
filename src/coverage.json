@@ -1,0 +1,193 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-14T09:49:20.189Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 9,
+    "implemented": 9,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Fix all backend errors surfacing in the UI and ensure every existing screen’s primary actions (forms/buttons) are functional end-to-end by wiring the current React UI to working Motoko backend endpoints (remove placeholder/“backend pending” states). This includes the existing module screens that currently show placeholder notices (Renewal Reminders, Savings Coach, Membership Checker, Wellbeing & Fitness, Meal Planning, Shopping Lists, Achievements, Community).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/backend.d.ts",
+          "frontend/src/utils/backendErrors.ts",
+          "frontend/src/hooks/useReminders.ts",
+          "frontend/src/components/reminders/RenewalRemindersModule.tsx",
+          "frontend/src/hooks/useSavingsCoach.ts",
+          "frontend/src/components/savings-coach/SavingsCoachModule.tsx",
+          "frontend/src/hooks/useMemberships.ts",
+          "frontend/src/components/memberships/MembershipCheckerModule.tsx",
+          "frontend/src/hooks/useWellbeing.ts",
+          "frontend/src/components/wellbeing/WellbeingFitnessModule.tsx",
+          "frontend/src/hooks/useMealPlanning.ts",
+          "frontend/src/components/meal-planning/MealPlanningModule.tsx",
+          "frontend/src/hooks/useShoppingLists.ts",
+          "frontend/src/components/shopping/ShoppingListsModule.tsx",
+          "frontend/src/hooks/useAchievements.ts",
+          "frontend/src/components/achievements/AchievementsScreen.tsx",
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/components/household/HouseholdDashboard.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/backend.d.ts",
+          "frontend/src/utils/backendErrors.ts"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Implement the Community module’s “Live Chat” system end-to-end (global chat + private messages) with automatic UI updates using 1-second polling (no manual refresh required).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useChat.ts",
+          "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+          "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+          "frontend/src/components/community/CommunityModule.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useChat.ts",
+          "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+          "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+          "frontend/src/components/community/CommunityModule.tsx"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Add message flagging and staff moderation controls: users can flag messages; staff can view flagged messages; staff can delete messages directly from chats; staff can review the content/context of flagged private messages.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useModeration.ts",
+          "frontend/src/components/community/chat/MessageRow.tsx",
+          "frontend/src/pages/staff/StaffModeration.tsx",
+          "frontend/src/components/layout/AppLayout.tsx",
+          "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+          "frontend/src/components/community/chat/PrivateMessagesPanel.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useModeration.ts",
+          "frontend/src/components/community/chat/MessageRow.tsx",
+          "frontend/src/pages/staff/StaffModeration.tsx",
+          "frontend/src/components/layout/AppLayout.tsx",
+          "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+          "frontend/src/components/community/chat/PrivateMessagesPanel.tsx"
+        ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Implement private messaging controls to allow a user to pause a private conversation such that the other participant cannot send new messages until unpaused (conversation-level control).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useChat.ts",
+          "frontend/src/components/community/chat/PrivateMessagesPanel.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useChat.ts",
+          "frontend/src/components/community/chat/PrivateMessagesPanel.tsx"
+        ]
+      },
+      {
+        "id": "REQ-5",
+        "summary": "Enforce messaging permission rules: block non-staff users from privately messaging staff; allow staff to privately message each other; allow staff to send one-way messages to users (users cannot reply in that thread/channel).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useChat.ts",
+          "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+          "frontend/src/hooks/useProfile.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useChat.ts",
+          "frontend/src/components/community/chat/PrivateMessagesPanel.tsx"
+        ]
+      },
+      {
+        "id": "REQ-6",
+        "summary": "Create a hidden staff-only group chat channel that is visible only to staff and supports the same 1-second polling update behavior and staff message deletion capabilities.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useChat.ts",
+          "frontend/src/components/community/chat/StaffGroupChatPanel.tsx",
+          "frontend/src/components/community/CommunityModule.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useChat.ts",
+          "frontend/src/components/community/chat/StaffGroupChatPanel.tsx",
+          "frontend/src/components/community/CommunityModule.tsx"
+        ]
+      },
+      {
+        "id": "REQ-7",
+        "summary": "Create a household group chat for users who are in the same household group, scoped to their household membership, with 1-second polling updates and message flagging available to users.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useChat.ts",
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/components/community/chat/HouseholdChatPanel.tsx",
+          "frontend/src/components/community/CommunityModule.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useChat.ts",
+          "frontend/src/components/community/chat/HouseholdChatPanel.tsx",
+          "frontend/src/components/community/CommunityModule.tsx"
+        ]
+      },
+      {
+        "id": "REQ-8",
+        "summary": "Implement the requested work as small, independently shippable phases while extending the current project (do not replace it), ensuring the app remains functional at the end of each phase (no broken navigation or dead buttons).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/implementation/phases.md",
+          "frontend/src/components/community/CommunityModule.tsx",
+          "frontend/src/components/layout/AppLayout.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/community/CommunityModule.tsx",
+          "frontend/src/components/layout/AppLayout.tsx"
+        ]
+      },
+      {
+        "id": "REQ-9",
+        "summary": "Apply a consistent, coherent visual theme across the updated Community/chat experiences and any newly-added staff moderation views (typography, spacing, component density, and a distinct color palette) while staying consistent with the existing Tailwind/Shadcn design system and supporting light/dark mode. Avoid a blue+purple primary palette.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/index.css",
+          "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+          "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+          "frontend/src/pages/staff/StaffModeration.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+          "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+          "frontend/src/pages/staff/StaffModeration.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "caffeine.lock.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/backend.d.ts",
+    "frontend/src/components/community/CommunityModule.tsx",
+    "frontend/src/components/community/chat/GlobalChatPanel.tsx",
+    "frontend/src/components/community/chat/HouseholdChatPanel.tsx",
+    "frontend/src/components/community/chat/MessageRow.tsx",
+    "frontend/src/components/community/chat/PrivateMessagesPanel.tsx",
+    "frontend/src/components/community/chat/StaffGroupChatPanel.tsx",
+    "frontend/src/components/layout/AppLayout.tsx",
+    "frontend/src/hooks/useChat.ts",
+    "frontend/src/hooks/useModeration.ts",
+    "frontend/src/pages/staff/StaffModeration.tsx",
+    "frontend/src/utils/backendErrors.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}
